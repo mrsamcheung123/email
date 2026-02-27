@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAM CHEUNG</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-2: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-2: #7c3aed;
+      --ok: #16a34a;
+      --danger: #dc2626;
+      --border: #e2e8f0;
+      --chip: #eef2ff;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, #e8f0ff 0, #f4f7fb 35%, #f8fafc 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .app {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 4;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .title-glow {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      box-shadow: 0 0 0 8px rgba(124, 58, 237, 0.12), 0 0 24px rgba(37, 99, 235, 0.35);
+      flex: 0 0 auto;
+    }
+
+    .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+    input, button, select, textarea {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+      font: inherit;
+    }
+
+    #endpoint, #loadBtn {
+      display: none !important;
+    }
+
+    #refreshBtn {
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 10px 16px;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+      cursor: pointer;
+      transition: .2s transform ease, .2s box-shadow ease, .2s filter ease;
+    }
+    #refreshBtn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.34);
+      filter: brightness(1.02);
+    }
+    #refreshBtn:active { transform: translateY(0); }
+
+    .announcement-wrap {
+      max-width: 1400px;
+      width: calc(100% - 28px);
+      margin: 14px auto 0;
+    }
+
+    .announcement {
+      width: 100%;
+      resize: vertical;
+      min-height: 82px;
+      border-radius: 14px;
+      border: 1px solid #dbe7ff;
+      background:
+        linear-gradient(135deg, #ffffff 0%, #f8fbff 50%, #f7f3ff 100%);
+      box-shadow: var(--shadow);
+      color: #1e293b;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      min-height: 0;
+      max-width: 1400px;
+      width: calc(100% - 28px);
+      margin: 14px auto;
+      gap: 14px;
+    }
+
+    .sidebar {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .meta {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      display: flex; justify-content: space-between; gap: 8px;
+      background: var(--panel-2);
+    }
+
+    .list { overflow: auto; min-height: 0; }
+
+    .item {
+      border-bottom: 1px solid #eef2f7;
+      padding: 12px;
+      cursor: pointer;
+      display: grid;
+      gap: 6px;
+      transition: background .18s ease;
+    }
+    .item:hover { background: #f8fbff; }
+    .item.active { background: #eff6ff; }
+
+    .subject {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .row {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+      color: var(--muted); font-size: 12px;
+    }
+
+    .chip {
+      background: var(--chip);
+      border: 1px solid #dbe4ff;
+      color: #334155;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    .viewer {
+      display: grid;
+      grid-template-rows: auto auto auto 1fr;
+      min-height: 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .mail-head {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 16px;
+      display: grid;
+      gap: 7px;
+      background: var(--panel);
+    }
+
+    .mail-head h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .mail-attrs {
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+
+    .tab {
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: white;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      border-color: #bfdbfe;
+      background: #dbeafe;
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    .preview-wrap {
+      min-height: 0;
+      overflow: auto;
+      padding: 12px 16px 16px;
+      background: #fff;
+    }
+
+    iframe {
+      width: 100%;
+      min-height: 72vh;
+      border: 1px solid #dbe2ea;
+      border-radius: 12px;
+      background: white;
+    }
+
+    pre {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      color: #0f172a;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .empty { color: var(--muted); padding: 20px; }
+
+    .status {
+      padding: 8px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      background: #fcfdff;
+    }
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--danger); }
+
+    @media (max-width: 980px) {
+      .container, .announcement-wrap {
+        grid-template-columns: 1fr;
+        width: calc(100% - 18px);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .container { margin-top: 10px; }
+      iframe { min-height: 50vh; }
+      .topbar { grid-template-columns: 1fr; }
+      .title { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <span class="title-glow" aria-hidden="true"></span>
+        <h1 class="title">SAM CHEUNG</h1>
+      </div>
+      <div class="controls">
+        <input id="endpoint" size="70" />
+        <button class="primary" id="loadBtn">Load Emails</button>
+        <button id="refreshBtn">↻ Refresh</button>
+      </div>
+    </div>
+
+    <div class="announcement-wrap">
+      <textarea id="announcementBox" class="announcement">1. 你要手動Refresh</textarea>
+    </div>
+
+    <div class="container">
+      <aside class="sidebar">
+        <div id="status" class="status">Ready</div>
+        <div class="meta">
+          <span id="count">0 emails</span>
+          <span id="lastUpdated">Never</span>
+        </div>
+        <div id="mailList" class="list"></div>
+      </aside>
+
+      <main class="viewer">
+        <div class="mail-head">
+          <h2 id="mailSubject">No email selected</h2>
+          <div class="mail-attrs" id="mailAttrs"></div>
+        </div>
+        <div class="tabs">
+          <button class="tab active" data-tab="html">HTML Preview</button>
+          <button class="tab" data-tab="text">Text</button>
+          <button class="tab" data-tab="raw">Raw JSON</button>
+        </div>
+        <div class="preview-wrap" id="preview"></div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const BASE_ENDPOINT = "https://api.testmail.app/api/json?apikey=8b791d3b-b8db-42e7-8245-590b9817a929&namespace=1zyj1&pretty=true";
+
+    const state = {
+      emails: [],
+      filtered: [],
+      selectedId: null,
+      tab: "html"
+    };
+
+    const els = {
+      endpoint: document.getElementById("endpoint"),
+      loadBtn: document.getElementById("loadBtn"),
+      refreshBtn: document.getElementById("refreshBtn"),
+      status: document.getElementById("status"),
+      count: document.getElementById("count"),
+      lastUpdated: document.getElementById("lastUpdated"),
+      mailList: document.getElementById("mailList"),
+      mailSubject: document.getElementById("mailSubject"),
+      mailAttrs: document.getElementById("mailAttrs"),
+      preview: document.getElementById("preview"),
+      tabs: [...document.querySelectorAll(".tab")]
+    };
+
+    els.endpoint.value = BASE_ENDPOINT;
+
+    const safe = (v) => (v === undefined || v === null) ? "" : String(v);
+
+    function setStatus(msg, type = "") {
+      els.status.className = "status" + (type ? ` ${type}` : "");
+      els.status.textContent = msg;
+    }
+
+    function parseDate(email) {
+      const raw =
+        email.timestamp ||
+        email.created_at ||
+        email.date ||
+        email.receivedAt ||
+        email.received_at ||
+        email.time ||
+        null;
+      if (!raw) return null;
+      const dt = new Date(raw);
+      return Number.isNaN(dt.getTime()) ? null : dt;
+    }
+
+    function normalizeEmail(email, idx) {
+      const dt = parseDate(email);
+      const id =
+        safe(email.id) ||
+        safe(email.messageId) ||
+        safe(email.message_id) ||
+        safe(email._id) ||
+        `idx-${idx}-${Math.random().toString(36).slice(2, 9)}`;
+
+      const from = email.from || email.fromAddress || email.sender || email.mail_from || "";
+      const to = email.to || email.toAddress || email.recipient || email.mail_to || "";
+      const subject = email.subject || "(No Subject)";
+      const html = email.html || email.htmlBody || email.html_body || email.bodyHtml || "";
+      const text = email.text || email.textBody || email.text_body || email.bodyText || "";
+
+      return {
+        id,
+        raw: email,
+        subject: safe(subject),
+        from: safe(from),
+        to: safe(to),
+        html: safe(html),
+        text: safe(text),
+        date: dt
+      };
+    }
+
+    function sortEmails(items) {
+      return [...items].sort((a, b) => {
+        const at = a.date ? a.date.getTime() : 0;
+        const bt = b.date ? b.date.getTime() : 0;
+        return bt - at;
+      });
+    }
+
+    function refreshEmailsView() {
+      state.filtered = sortEmails(state.emails);
+      renderList();
+    }
+
+    function renderList() {
+      els.mailList.innerHTML = "";
+      els.count.textContent = `${state.filtered.length} email${state.filtered.length === 1 ? "" : "s"}`;
+
+      if (!state.filtered.length) {
+        els.mailList.innerHTML = `<div class="empty">No emails available in the last 24 hours.</div>`;
+        renderSelected(null);
+        return;
+      }
+
+      if (!state.selectedId || !state.filtered.some(e => e.id === state.selectedId)) {
+        state.selectedId = state.filtered[0].id;
+      }
+
+      for (const e of state.filtered) {
+        const div = document.createElement("div");
+        div.className = "item" + (e.id === state.selectedId ? " active" : "");
+        div.onclick = () => {
+          state.selectedId = e.id;
+          renderList();
+          renderSelected(e);
+        };
+
+        const dateStr = e.date ? e.date.toLocaleString() : "Unknown date";
+        div.innerHTML = `
+          <div class="subject">${escapeHtml(e.subject)}</div>
+          <div class="row"><span class="chip">From</span> ${escapeHtml(e.from || "Unknown")}</div>
+          <div class="row"><span class="chip">To</span> ${escapeHtml(e.to || "Unknown")}</div>
+          <div class="row">${escapeHtml(dateStr)}</div>
+        `;
+        els.mailList.appendChild(div);
+      }
+
+      const selected = state.filtered.find(x => x.id === state.selectedId) || null;
+      renderSelected(selected);
+    }
+
+    function renderSelected(email) {
+      if (!email) {
+        els.mailSubject.textContent = "No email selected";
+        els.mailAttrs.innerHTML = "";
+        els.preview.innerHTML = `<div class="empty">Select an email from the list to preview it.</div>`;
+        return;
+      }
+
+      const dateStr = email.date ? email.date.toLocaleString() : "Unknown date";
+      els.mailSubject.textContent = email.subject;
+      els.mailAttrs.innerHTML = `
+        <div><strong>From:</strong> ${escapeHtml(email.from || "Unknown")}</div>
+        <div><strong>To:</strong> ${escapeHtml(email.to || "Unknown")}</div>
+        <div><strong>Received:</strong> ${escapeHtml(dateStr)}</div>
+      `;
+
+      renderTab(email);
+    }
+
+    function renderTab(email) {
+      if (!email) return;
+
+      for (const t of els.tabs) {
+        t.classList.toggle("active", t.dataset.tab === state.tab);
+      }
+
+      if (state.tab === "html") {
+        if (email.html && email.html.trim()) {
+          const srcdoc = sanitizeForSrcdoc(email.html);
+          els.preview.innerHTML = `<iframe sandbox="allow-popups allow-forms allow-same-origin" srcdoc="${srcdoc.replace(/"/g, "&quot;")}"></iframe>`;
+        } else if (email.text && email.text.trim()) {
+          els.preview.innerHTML = `<pre>${escapeHtml(email.text)}</pre>`;
+        } else {
+          els.preview.innerHTML = `<div class="empty">No HTML or text content available.</div>`;
+        }
+      } else if (state.tab === "text") {
+        if (email.text && email.text.trim()) {
+          els.preview.innerHTML = `<pre>${escapeHtml(email.text)}</pre>`;
+        } else {
+          els.preview.innerHTML = `<div class="empty">No text body available.</div>`;
+        }
+      } else {
+        els.preview.innerHTML = `<pre>${escapeHtml(JSON.stringify(email.raw, null, 2))}</pre>`;
+      }
+    }
+
+    function sanitizeForSrcdoc(html) {
+      return String(html)
+        .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
+        .replace(/\son\w+="[^"]*"/gi, "")
+        .replace(/\son\w+='[^']*'/gi, "")
+        .replace(/javascript:/gi, "");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function findArrayPayload(json) {
+      if (Array.isArray(json)) return json;
+      const keys = ["emails", "messages", "data", "items", "results"];
+      for (const k of keys) {
+        if (Array.isArray(json?.[k])) return json[k];
+      }
+      if (json && typeof json === "object") {
+        for (const k of Object.keys(json)) {
+          if (Array.isArray(json[k])) return json[k];
+        }
+      }
+      return [];
+    }
+
+    function buildEndpointWithLast1Day(baseUrl) {
+      const now = Date.now();
+      const oneDayAgo = now - (24 * 60 * 60 * 1000);
+      const url = new URL(baseUrl);
+      url.searchParams.set("timestamp_from", String(oneDayAgo));
+      return url.toString();
+    }
+
+    async function loadEmails({ silent = false } = {}) {
+      const baseUrl = els.endpoint.value.trim() || BASE_ENDPOINT;
+      let url;
+      try {
+        url = buildEndpointWithLast1Day(baseUrl);
+      } catch {
+        setStatus("Invalid API endpoint URL.", "err");
+        return;
+      }
+
+      if (!silent) setStatus("Loading emails from last 24 hours...");
+      try {
+        const res = await fetch(url, { headers: { "Accept": "application/json" } });
+        if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+
+        const json = await res.json();
+        const arr = findArrayPayload(json);
+        state.emails = arr.map(normalizeEmail);
+        refreshEmailsView();
+
+        els.lastUpdated.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+        setStatus(`Loaded ${state.emails.length} email(s) from last 24 hours.`, "ok");
+      } catch (err) {
+        console.error(err);
+        setStatus(`Failed to load emails: ${err.message}`, "err");
+      }
+    }
+
+    els.loadBtn.addEventListener("click", () => loadEmails());
+    els.refreshBtn.addEventListener("click", () => loadEmails({ silent: true }));
+
+    for (const tab of els.tabs) {
+      tab.addEventListener("click", () => {
+        state.tab = tab.dataset.tab;
+        const selected = state.filtered.find(x => x.id === state.selectedId) || null;
+        renderTab(selected);
+      });
+    }
+
+    loadEmails();
+  </script>
+</body>
+</html>
