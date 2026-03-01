@@ -135,7 +135,7 @@
     }
 
     .title {
-      font-size: 22px; /* bigger */
+      font-size: 22px;
       font-weight: 900;
       letter-spacing: 0.09em;
       background: linear-gradient(135deg, #0f172a 30%, var(--accent-blue) 100%);
@@ -220,9 +220,8 @@
 
     .announcement {
       width: 100%;
-      /* IMPORTANT: auto-size height based on text */
       resize: none;
-      overflow: hidden; /* hide scrollbar; we auto-expand */
+      overflow: hidden;
       height: auto;
 
       border-radius: var(--radius-md);
@@ -233,7 +232,7 @@
       color: var(--text-primary);
 
       font-weight: 800;
-      font-size: 18px;       /* bigger + attractive */
+      font-size: 18px;
       line-height: 1.65;
       padding: 16px 18px;
 
@@ -456,29 +455,54 @@
       font-size: 14px;
     }
 
-    /* ─── Toast Notification ─── */
+    /* ─── Toast Notification (BIGGER + MORE ATTRACTIVE) ─── */
     .toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--bg-card);
+      bottom: 28px;
+      right: 28px;
+
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.96)),
+        radial-gradient(ellipse 80% 120% at 20% 0%, rgba(37,99,235,0.10), transparent);
       color: var(--text-primary);
-      padding: 12px 24px;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-card), 0 5px 15px rgba(0,0,0,0.08);
-      border-left: 4px solid var(--accent-emerald);
-      font-weight: 600;
-      font-size: 14px;
-      transform: translateY(100px);
+
+      padding: 16px 22px;              /* bigger */
+      border-radius: 18px;             /* bigger roundness */
+      border: 1px solid rgba(37,99,235,0.18);
+      border-left: 6px solid var(--accent-emerald);
+
+      min-width: 280px;                /* makes it feel like a real toast */
+      max-width: min(520px, calc(100vw - 56px));
+
+      font-weight: 800;
+      font-size: 16px;                 /* bigger text */
+      letter-spacing: 0.01em;
+
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.14),
+        0 6px 18px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+
+      transform: translateY(140px);
       opacity: 0;
       pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
     }
 
     .toast.show {
       transform: translateY(0);
       opacity: 1;
+    }
+
+    .toast::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(37,99,235,0.12), transparent 55%);
+      opacity: 0.8;
     }
 
     /* ─── Responsive ─── */
@@ -510,6 +534,14 @@
 
       .title { font-size: 20px; }
       .announcement { font-size: 17px; }
+
+      .toast {
+        right: 16px;
+        left: 16px;
+        bottom: 16px;
+        max-width: none;
+        min-width: 0;
+      }
     }
   </style>
 </head>
