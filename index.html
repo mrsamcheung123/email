@@ -347,6 +347,15 @@
       font-size: 12px;
     }
 
+    .time-gap {
+      color: var(--accent-rose);
+      font-weight: 700;
+      font-size: 12px;
+      background: rgba(225, 29, 72, 0.1);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
     /* ─── Viewer ─── */
     .viewer {
       display: grid;
@@ -654,6 +663,22 @@
       renderList();
     }
 
+    function isWithin30Mins(dt) {
+      if (!dt) return false;
+      const now = new Date();
+      const diffMs = now - dt;
+      const diffMins = diffMs / (1000 * 60);
+      return diffMins <= 30;
+    }
+
+    function calculateTimeGap(dt) {
+      if (!dt) return '';
+      const now = new Date();
+      const diffMs = now - dt;
+      const diffMins = Math.floor(diffMs / (1000 * 60));
+      return `${diffMins} min ago`;
+    }
+
     function renderList() {
       els.mailList.innerHTML = "";
       els.count.textContent = `${state.filtered.length} email${state.filtered.length === 1 ? "" : "s"}`;
@@ -678,8 +703,11 @@
         };
 
         const dateStr = e.date ? e.date.toLocaleString() : "Unknown date";
+        const isRecent = isWithin30Mins(e.date);
+        const timeGap = isRecent ? calculateTimeGap(e.date) : '';
         div.innerHTML = `
           <div class="subject">${escapeHtml(e.subject)}</div>
+          ${isRecent ? `<div class="time-gap">${escapeHtml(timeGap)}</div>` : ''}
           <div class="row">${escapeHtml(dateStr)}</div>
         `;
         els.mailList.appendChild(div);
