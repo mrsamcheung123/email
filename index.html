@@ -6,71 +6,42 @@
   <title>SAM CHEUNG</title>
   <style>
     :root {
-      /* Light Mode Palette (Default) */
+      /* Light Mode Palette */
       --bg-primary: #f4f7fb;
       --bg-secondary: #ffffff;
       --bg-tertiary: #f8fafc;
       --bg-card: #ffffff;
       --bg-hover: #f1f5f9;
       --bg-active: #eff6ff;
-      
+
       --text-primary: #0f172a;
       --text-secondary: #334155;
       --text-muted: #64748b;
-      
+
       --accent-blue: #2563eb;
       --accent-cyan: #0891b2;
       --accent-violet: #7c3aed;
       --accent-emerald: #059669;
       --accent-rose: #e11d48;
-      
+
       --border-color: #e2e8f0;
       --border-active: #3b82f6;
-      
+
       --glow-blue: rgba(37, 99, 235, 0.15);
       --glow-violet: rgba(124, 58, 237, 0.12);
-      
+
       /* Radii & Shadows */
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
       --radius-full: 9999px;
-      
+
       --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.05);
       --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.04);
-      
+
       /* Transitions */
       --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .dark-theme {
-      /* Dark Mode Palette (V2 Theme) */
-      --bg-primary: #1a1a2e;
-      --bg-secondary: #16213e;
-      --bg-tertiary: #0f3460;
-      --bg-card: #1a1a2e;
-      --bg-hover: #0f3460;
-      --bg-active: #533483;
-      
-      --text-primary: #e94560;
-      --text-secondary: #f39c12;
-      --text-muted: #bdc3c7;
-      
-      --accent-blue: #3498db;
-      --accent-cyan: #1abc9c;
-      --accent-violet: #9b59b6;
-      --accent-emerald: #2ecc71;
-      --accent-rose: #e74c3c;
-      
-      --border-color: #34495e;
-      --border-active: #3498db;
-      
-      --glow-blue: rgba(52, 152, 219, 0.2);
-      --glow-violet: rgba(155, 89, 182, 0.18);
-      
-      --shadow-card: 0 12px 35px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
-      --shadow-glow: 0 0 50px rgba(52, 152, 219, 0.1);
     }
 
     * {
@@ -97,21 +68,12 @@
       background: rgba(100, 116, 139, 0.4);
     }
 
-    .dark-theme *::-webkit-scrollbar-thumb {
-      background: rgba(189, 195, 199, 0.3);
-    }
-
-    .dark-theme *::-webkit-scrollbar-thumb:hover {
-      background: rgba(189, 195, 199, 0.5);
-    }
-
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
       overflow: hidden;
-      transition: background var(--transition-smooth), color var(--transition-smooth);
     }
 
     .app {
@@ -122,14 +84,6 @@
       background:
         radial-gradient(ellipse 80% 60% at 10% 0%, rgba(37, 99, 235, 0.06), transparent),
         radial-gradient(ellipse 60% 50% at 90% 100%, rgba(124, 58, 237, 0.05), transparent),
-        var(--bg-primary);
-      transition: background var(--transition-smooth);
-    }
-
-    .dark-theme .app {
-      background:
-        radial-gradient(ellipse 80% 60% at 10% 0%, rgba(52, 152, 219, 0.08), transparent),
-        radial-gradient(ellipse 60% 50% at 90% 100%, rgba(155, 89, 182, 0.07), transparent),
         var(--bg-primary);
     }
 
@@ -146,11 +100,6 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      transition: background var(--transition-smooth), border-color var(--transition-smooth);
-    }
-
-    .dark-theme .topbar {
-      background: rgba(26, 26, 46, 0.9);
     }
 
     .brand-wrap {
@@ -167,7 +116,6 @@
       border-radius: var(--radius-full);
       background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
       flex-shrink: 0;
-      transition: background var(--transition-smooth);
     }
 
     .title-glow::before {
@@ -181,35 +129,20 @@
       animation: pulse-glow 3s ease-in-out infinite;
     }
 
-    .dark-theme .title-glow {
-      background: linear-gradient(135deg, var(--accent-rose), var(--accent-cyan));
-    }
-
-    .dark-theme .title-glow::before {
-      background: linear-gradient(135deg, var(--accent-rose), var(--accent-cyan));
-    }
-
     @keyframes pulse-glow {
       0%, 100% { opacity: 0.15; transform: scale(1); }
       50% { opacity: 0.35; transform: scale(1.2); }
     }
 
     .title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
+      font-size: 22px; /* bigger */
+      font-weight: 900;
+      letter-spacing: 0.09em;
       background: linear-gradient(135deg, #0f172a 30%, var(--accent-blue) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      transition: background var(--transition-smooth);
-    }
-
-    .dark-theme .title {
-      background: linear-gradient(135deg, #ffffff 0%, #3498db 50%, #e74c3c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      line-height: 1.1;
     }
 
     .controls {
@@ -240,22 +173,6 @@
       display: none !important;
     }
 
-    #themeToggle {
-      border: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      font-weight: 600;
-      font-size: 13px;
-      border-radius: var(--radius-full);
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-    }
-
-    #themeToggle:hover {
-      background: var(--bg-hover);
-    }
-
     #refreshBtn {
       position: relative;
       border: none;
@@ -274,13 +191,6 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    .dark-theme #refreshBtn {
-      background: linear-gradient(135deg, var(--accent-rose), var(--accent-violet));
-      box-shadow:
-        0 4px 12px rgba(231, 76, 60, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
     #refreshBtn::before {
       content: '';
       position: absolute;
@@ -296,19 +206,9 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
 
-    .dark-theme #refreshBtn:hover {
-      box-shadow:
-        0 6px 20px rgba(231, 76, 60, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
     #refreshBtn:active {
       transform: translateY(1px);
       box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
-    }
-
-    .dark-theme #refreshBtn:active {
-      box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
     }
 
     /* ─── Announcement ─── */
@@ -320,19 +220,31 @@
 
     .announcement {
       width: 100%;
-      resize: vertical;
-      min-height: 72px;
+      /* IMPORTANT: auto-size height based on text */
+      resize: none;
+      overflow: hidden; /* hide scrollbar; we auto-expand */
+      height: auto;
+
       border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      background: var(--bg-card);
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.9), rgba(248,250,252,0.95)),
+        radial-gradient(ellipse 60% 80% at 10% 0%, rgba(37,99,235,0.09), transparent);
       color: var(--text-primary);
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.5;
-      padding: 14px 18px;
-      box-shadow: var(--shadow-card);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+      font-weight: 800;
+      font-size: 18px;       /* bigger + attractive */
+      line-height: 1.65;
+      padding: 16px 18px;
+
+      box-shadow: var(--shadow-card), 0 0 24px rgba(37,99,235,0.06);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .announcement:focus {
+      border-color: rgba(37, 99, 235, 0.55);
+      box-shadow: var(--shadow-card), 0 0 0 4px rgba(37, 99, 235, 0.10);
+      transform: translateY(-1px);
     }
 
     /* ─── Main Layout ─── */
@@ -370,13 +282,8 @@
       background: var(--bg-tertiary);
     }
 
-    .status.ok {
-      color: var(--accent-emerald);
-    }
-
-    .status.err {
-      color: var(--accent-rose);
-    }
+    .status.ok { color: var(--accent-emerald); }
+    .status.err { color: var(--accent-rose); }
 
     .meta {
       padding: 10px 16px;
@@ -389,10 +296,6 @@
       align-items: center;
       gap: 8px;
       background: rgba(248, 250, 252, 0.5);
-    }
-
-    .dark-theme .meta {
-      background: rgba(15, 52, 96, 0.6);
     }
 
     .list {
@@ -423,20 +326,10 @@
       transition: background var(--transition-fast);
     }
 
-    .item:hover {
-      background: var(--bg-hover);
-    }
-
-    .item.active {
-      background: var(--bg-active);
-    }
-
+    .item:hover { background: var(--bg-hover); }
+    .item.active { background: var(--bg-active); }
     .item.active::before {
       background: linear-gradient(180deg, var(--accent-blue), var(--accent-violet));
-    }
-
-    .dark-theme .item.active::before {
-      background: linear-gradient(180deg, var(--accent-rose), var(--accent-cyan));
     }
 
     .subject {
@@ -453,24 +346,6 @@
       flex-wrap: wrap;
       color: var(--text-muted);
       font-size: 12px;
-    }
-
-    .chip {
-      background: rgba(37, 99, 235, 0.08);
-      border: 1px solid rgba(37, 99, 235, 0.15);
-      color: var(--accent-blue);
-      border-radius: var(--radius-full);
-      padding: 2px 10px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .dark-theme .chip {
-      background: rgba(52, 152, 219, 0.1);
-      border: 1px solid rgba(52, 152, 219, 0.2);
-      color: var(--accent-blue);
     }
 
     /* ─── Viewer ─── */
@@ -508,21 +383,12 @@
       color: var(--text-secondary);
     }
 
-    .mail-attrs strong {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
     .tabs {
       display: flex;
       gap: 6px;
       padding: 10px 22px;
       border-bottom: 1px solid var(--border-color);
       background: rgba(248, 250, 252, 0.6);
-    }
-
-    .dark-theme .tabs {
-      background: rgba(15, 52, 96, 0.7);
     }
 
     .tab {
@@ -553,22 +419,11 @@
       box-shadow: 0 0 12px rgba(37, 99, 235, 0.06);
     }
 
-    .dark-theme .tab.active {
-      border-color: rgba(52, 152, 219, 0.4);
-      background: rgba(52, 152, 219, 0.12);
-      color: var(--accent-blue);
-      box-shadow: 0 0 15px rgba(52, 152, 219, 0.08);
-    }
-
     .preview-wrap {
       min-height: 0;
       overflow: auto;
       padding: 16px 22px 22px;
       background: var(--bg-primary);
-    }
-
-    .dark-theme .preview-wrap {
-      background: #ffffff;
     }
 
     iframe {
@@ -578,10 +433,6 @@
       border-radius: var(--radius-md);
       background: #ffffff;
       box-shadow: 0 2px 10px rgba(15, 23, 42, 0.02);
-    }
-
-    .dark-theme iframe {
-      background: #ffffff;
     }
 
     pre {
@@ -596,10 +447,6 @@
       font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
       font-size: 13px;
       line-height: 1.65;
-    }
-
-    .dark-theme pre {
-      background: #ffffff;
     }
 
     .empty {
@@ -629,15 +476,14 @@
       z-index: 1000;
     }
 
-    .dark-theme .toast {
-      box-shadow: var(--shadow-card), 0 6px 18px rgba(0,0,0,0.15);
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
 
     /* ─── Responsive ─── */
     @media (max-width: 980px) {
-      body {
-        overflow: auto;
-      }
+      body { overflow: auto; }
 
       .app {
         height: auto;
@@ -659,17 +505,11 @@
         width: calc(100% - 24px);
       }
 
-      .sidebar {
-        max-height: 45vh;
-      }
+      .sidebar { max-height: 45vh; }
+      iframe { min-height: 50vh; }
 
-      iframe {
-        min-height: 50vh;
-      }
-
-      .title {
-        font-size: 18px;
-      }
+      .title { font-size: 20px; }
+      .announcement { font-size: 17px; }
     }
   </style>
 </head>
@@ -681,7 +521,6 @@
         <h1 class="title">SAM CHEUNG</h1>
       </div>
       <div class="controls">
-        <button id="themeToggle">🌙 Dark</button>
         <input id="endpoint" size="70" />
         <button class="primary" id="loadBtn">Load Emails</button>
         <button id="refreshBtn">↻ Refresh</button>
@@ -726,15 +565,13 @@
       emails: [],
       filtered: [],
       selectedId: null,
-      tab: "html",
-      isDark: false
+      tab: "html"
     };
 
     const els = {
       endpoint: document.getElementById("endpoint"),
       loadBtn: document.getElementById("loadBtn"),
       refreshBtn: document.getElementById("refreshBtn"),
-      themeToggle: document.getElementById("themeToggle"),
       status: document.getElementById("status"),
       count: document.getElementById("count"),
       lastUpdated: document.getElementById("lastUpdated"),
@@ -743,19 +580,22 @@
       mailAttrs: document.getElementById("mailAttrs"),
       preview: document.getElementById("preview"),
       tabs: [...document.querySelectorAll(".tab")],
-      toast: document.getElementById("toast")
+      toast: document.getElementById("toast"),
+      announcementBox: document.getElementById("announcementBox")
     };
 
     els.endpoint.value = BASE_ENDPOINT;
 
-    // Theme toggle
-    function toggleTheme() {
-      state.isDark = !state.isDark;
-      document.body.classList.toggle('dark-theme', state.isDark);
-      els.themeToggle.textContent = state.isDark ? '☀️ Light' : '🌙 Dark';
+    // Auto-grow textarea to fit content
+    function autoGrowAnnouncement() {
+      const ta = els.announcementBox;
+      if (!ta) return;
+      ta.style.height = "auto";
+      ta.style.height = Math.max(72, ta.scrollHeight) + "px";
     }
 
-    els.themeToggle.addEventListener('click', toggleTheme);
+    els.announcementBox.addEventListener("input", autoGrowAnnouncement);
+    window.addEventListener("load", autoGrowAnnouncement);
 
     // Toast logic
     let toastTimeout;
@@ -798,8 +638,6 @@
         safe(email._id) ||
         `idx-${idx}-${Math.random().toString(36).slice(2, 9)}`;
 
-      const from = email.from || email.fromAddress || email.sender || email.mail_from || "";
-      const to = email.to || email.toAddress || email.recipient || email.mail_to || "";
       const subject = email.subject || "(No Subject)";
       const html = email.html || email.htmlBody || email.html_body || email.bodyHtml || "";
       const text = email.text || email.textBody || email.text_body || email.bodyText || "";
@@ -808,8 +646,6 @@
         id,
         raw: email,
         subject: safe(subject),
-        from: safe(from),
-        to: safe(to),
         html: safe(html),
         text: safe(text),
         date: dt
@@ -874,10 +710,7 @@
 
       const dateStr = email.date ? email.date.toLocaleString() : "Unknown date";
       els.mailSubject.textContent = email.subject;
-      els.mailAttrs.innerHTML = `
-        <div><strong>Received:</strong> ${escapeHtml(dateStr)}</div>
-      `;
-
+      els.mailAttrs.innerHTML = `<div><strong>Received:</strong> ${escapeHtml(dateStr)}</div>`;
       renderTab(email);
     }
 
@@ -969,10 +802,8 @@
 
         els.lastUpdated.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
         setStatus(`Loaded ${state.emails.length} email(s) from last 24 hours.`, "ok");
-        
-        if (silent) {
-          showToast("Refreshed successfully!");
-        }
+
+        if (silent) showToast("Refreshed successfully!");
       } catch (err) {
         console.error(err);
         setStatus(`Failed to load emails: ${err.message}`, "err");
