@@ -350,7 +350,7 @@
     /* ─── Viewer ─── */
     .viewer {
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto 1fr;
       min-height: 0;
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
@@ -380,42 +380,6 @@
       gap: 4px;
       font-size: 13px;
       color: var(--text-secondary);
-    }
-
-    .tabs {
-      display: flex;
-      gap: 6px;
-      padding: 10px 22px;
-      border-bottom: 1px solid var(--border-color);
-      background: rgba(248, 250, 252, 0.6);
-    }
-
-    .tab {
-      border-radius: var(--radius-full);
-      padding: 7px 16px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      transition:
-        background var(--transition-fast),
-        color var(--transition-fast),
-        border-color var(--transition-fast),
-        box-shadow var(--transition-fast);
-    }
-
-    .tab:hover {
-      background: var(--bg-hover);
-      color: var(--text-primary);
-    }
-
-    .tab.active {
-      border-color: rgba(37, 99, 235, 0.3);
-      background: rgba(37, 99, 235, 0.08);
-      color: var(--accent-blue);
-      box-shadow: 0 0 12px rgba(37, 99, 235, 0.06);
     }
 
     .preview-wrap {
@@ -578,11 +542,6 @@
           <h2 id="mailSubject">No email selected</h2>
           <div class="mail-attrs" id="mailAttrs"></div>
         </div>
-        <div class="tabs">
-          <button class="tab active" data-tab="html">HTML Preview</button>
-          <button class="tab" data-tab="text">Text</button>
-          <button class="tab" data-tab="raw">Raw JSON</button>
-        </div>
         <div class="preview-wrap" id="preview"></div>
       </main>
     </div>
@@ -596,8 +555,7 @@
     const state = {
       emails: [],
       filtered: [],
-      selectedId: null,
-      tab: "html"
+      selectedId: null
     };
 
     const els = {
@@ -611,7 +569,6 @@
       mailSubject: document.getElementById("mailSubject"),
       mailAttrs: document.getElementById("mailAttrs"),
       preview: document.getElementById("preview"),
-      tabs: [...document.querySelectorAll(".tab")],
       toast: document.getElementById("toast"),
       announcementBox: document.getElementById("announcementBox")
     };
@@ -743,33 +700,19 @@
       const dateStr = email.date ? email.date.toLocaleString() : "Unknown date";
       els.mailSubject.textContent = email.subject;
       els.mailAttrs.innerHTML = `<div><strong>Received:</strong> ${escapeHtml(dateStr)}</div>`;
-      renderTab(email);
+      renderContent(email);
     }
 
-    function renderTab(email) {
+    function renderContent(email) {
       if (!email) return;
 
-      for (const t of els.tabs) {
-        t.classList.toggle("active", t.dataset.tab === state.tab);
-      }
-
-      if (state.tab === "html") {
-        if (email.html && email.html.trim()) {
-          const srcdoc = sanitizeForSrcdoc(email.html);
-          els.preview.innerHTML = `<iframe sandbox="allow-popups allow-forms allow-same-origin" srcdoc="${srcdoc.replace(/"/g, "&quot;")}"></iframe>`;
-        } else if (email.text && email.text.trim()) {
-          els.preview.innerHTML = `<pre>${escapeHtml(email.text)}</pre>`;
-        } else {
-          els.preview.innerHTML = `<div class="empty">No HTML or text content available.</div>`;
-        }
-      } else if (state.tab === "text") {
-        if (email.text && email.text.trim()) {
-          els.preview.innerHTML = `<pre>${escapeHtml(email.text)}</pre>`;
-        } else {
-          els.preview.innerHTML = `<div class="empty">No text body available.</div>`;
-        }
+      if (email.html && email.html.trim()) {
+        const srcdoc = sanitizeForSrcdoc(email.html);
+        els.preview.innerHTML = `<iframe sandbox="allow-popups allow-forms allow-same-origin" srcdoc="${srcdoc.replace(/"/g, "&quot;")}"></iframe>`;
+      } else if (email.text && email.text.trim()) {
+        els.preview.innerHTML = `<pre>${escapeHtml(email.text)}</pre>`;
       } else {
-        els.preview.innerHTML = `<pre>${escapeHtml(JSON.stringify(email.raw, null, 2))}</pre>`;
+        els.preview.innerHTML = `<div class="empty">No HTML or text content available.</div>`;
       }
     }
 
@@ -844,14 +787,6 @@
 
     els.loadBtn.addEventListener("click", () => loadEmails());
     els.refreshBtn.addEventListener("click", () => loadEmails({ silent: true }));
-
-    for (const tab of els.tabs) {
-      tab.addEventListener("click", () => {
-        state.tab = tab.dataset.tab;
-        const selected = state.filtered.find(x => x.id === state.selectedId) || null;
-        renderTab(selected);
-      });
-    }
 
     loadEmails();
   </script>
